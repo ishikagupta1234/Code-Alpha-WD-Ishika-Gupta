@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+button {
+    flex: 1 1 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: mediumvioletred;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: lightcoral;
+}
+
+.expenses {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.expense-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: mediumvioletred;
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.expense-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #fff;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.expense-item:last-child {
+    margin-bottom: 0;
+}
+
+.total-expenses {
+    text-align: right;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 10px;
+    color: #333;
+}
+
+
+</style>
+<body>
+  <div class="container">
+    <h1>Expense Tracker</h1>
+    <div class="form">
+        <input type="text" id="expenseInput" placeholder="Enter expense description">
+        <input type="number" id="amountInput" placeholder="Enter amount">
+        <select id="departmentSelect">
+            <option value="General">General</option>
+            <option value="Electricity">Electricity</option>
+            <option value="Rent">Rent</option>
+            <option value="Food">Food</option>
+            <option value="Transportation">Transportation</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Medical">Medical</option>
+        </select>
+        <button onclick="addExpense()">Add Expense</button>
+    </div>
+    <div class="expenses">
+        <div class="expense-header">
+            <span>Description</span>
+            <span>Amount</span>
+            <span>Department</span>
+            <span>Action</span>
+        </div>
+        <div id="expensesList">
+            <!-- Expenses will be dynamically added here -->
+        </div>
+        <div class="total-expenses">Total Expenses: $<span id="totalExpenses">0.00</span></div>
+    </div>
+</div>
+
+    <script>
+     let totalExpenses = 0;
+
+function addExpense() {
+    const expenseInput = document.getElementById('expenseInput');
+    const amountInput = document.getElementById('amountInput');
+    const departmentSelect = document.getElementById('departmentSelect');
+
+    const description = expenseInput.value;
+    const amount = parseFloat(amountInput.value);
+    const department = departmentSelect.value;
+
+    if (description.trim() === '' || isNaN(amount) || amount <= 0) {
+        alert('Please enter a valid description and amount.');
+        return;
+    }
+
+    const expensesList = document.getElementById('expensesList');
+
+    const expenseItem = document.createElement('div');
+    expenseItem.classList.add('expense-item');
+    expenseItem.innerHTML = `
+        <span>${description}</span>
+        <span>$${amount.toFixed(2)}</span>
+        <span>${department}</span>
+        <button onclick="deleteExpense(this)">Delete</button>
+    `;
+    expensesList.appendChild(expenseItem);
+
+    totalExpenses += amount;
+    document.getElementById('totalExpenses').textContent = totalExpenses.toFixed(2);
+
+    expenseInput.value = '';
+    amountInput.value = '';
+}
+
+function deleteExpense(button) {
+    const expenseItem = button.parentElement;
+    const amount = parseFloat(expenseItem.children[1].textContent.slice(1));
+    totalExpenses -= amount;
+    document.getElementById('totalExpenses').textContent = totalExpenses.toFixed(2);
+    expenseItem.remove();
+}
+
+
+    </script>
+</body>
+</html>

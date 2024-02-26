@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.dashboard {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.card1 {
+    background: linear-gradient(to right, #3b5998, #4c70ba);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 20px;
+    transition: transform 0.3s ease;
+}
+.card2 {
+    background: linear-gradient(to right, #1da1f2, #1a91da);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 20px;
+    transition: transform 0.3s ease;
+}
+.card3 {
+    background: linear-gradient(to right, #c13584, #e1306c);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 20px;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.metrics p {
+    margin: 5px 0;
+}
+
+.metrics span {
+    font-weight: bold;
+    color: #007bff;
+}
+
+canvas {
+    width: 100%;
+    height: 200px;
+    margin-top: 20px;
+    
+}
+
+</style>
+<body>
+    <div class="dashboard">
+        <div class="card1">
+            <h2>Facebook</h2>
+            <div class="metrics">
+                <p>Followers: <span id="facebook-followers">0</span></p>
+                <p>Likes: <span id="facebook-likes">0</span></p>
+                <p>Comments: <span id="facebook-comments">0</span></p>
+            </div>
+            <canvas id="facebook-chart"></canvas>
+        </div>
+        <div class="card2">
+            <h2>Twitter</h2>
+            <div class="metrics">
+                <p>Followers: <span id="twitter-followers">0</span></p>
+                <p>Likes: <span id="twitter-likes">0</span></p>
+                <p>Retweets: <span id="twitter-retweets">0</span></p>
+            </div>
+            <canvas id="twitter-chart"></canvas>
+        </div>
+        <div class="card3">
+            <h2>Instagram</h2>
+            <div class="metrics">
+                <p>Followers: <span id="instagram-followers">0</span></p>
+                <p>Likes: <span id="instagram-likes">0</span></p>
+                <p>Comments: <span id="instagram-comments">0</span></p>
+            </div>
+            <canvas id="instagram-chart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        // Simulated data for demonstration
+// Simulated data for demonstration
+const data = {
+    facebook: {
+        followers: 5000,
+        likes: 200,
+        comments: 50,
+        chartData: [1000, 1500, 2000, 2500, 3000, 3500, 4000]
+    },
+    twitter: {
+        followers: 3000,
+        likes: 150,
+        retweets: 75,
+        chartData: [500, 600, 700, 800, 900, 1000, 1100]
+    },
+    instagram: {
+        followers: 10000,
+        likes: 300,
+        comments: 100,
+        chartData: [2000, 2500, 3000, 3500, 4000, 4500, 5000]
+    }
+};
+
+// Update dashboard with data
+updateDashboard('facebook', data.facebook);
+updateDashboard('twitter', data.twitter);
+updateDashboard('instagram', data.instagram);
+
+function updateDashboard(platform, metrics) {
+    document.getElementById(`${platform}-followers`).textContent = metrics.followers;
+    document.getElementById(`${platform}-likes`).textContent = metrics.likes;
+    if (metrics.comments !== undefined) {
+        document.getElementById(`${platform}-comments`).textContent = metrics.comments;
+    }
+    if (metrics.retweets !== undefined) {
+        document.getElementById(`${platform}-retweets`).textContent = metrics.retweets;
+    }
+
+    const ctx = document.getElementById(`${platform}-chart`).getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+            datasets: [{
+                label: `${platform.charAt(0).toUpperCase()}${platform.slice(1)} Activity`,
+                data: metrics.chartData,
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderColor: '#fff', // Set border color to white
+                borderWidth: 2 // Increase border width for visibility
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: '#ddd' // Change grid color to make it more visible
+                    },
+                    ticks: {
+                        color: '#777' // Change tick color for better contrast
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false // Hide x-axis grid lines for cleaner appearance
+                    },
+                    ticks: {
+                        color: '#777' // Change tick color for better contrast
+                    }
+                }
+            }
+        }
+    });
+}
+
+
+
+    </script>
+</body>
+</html>
